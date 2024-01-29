@@ -62,7 +62,7 @@ app.innerHTML = `<div class="row">
       .map((monster) => {
         return `
 				<div class="grid">
-					<img alt="${monster.alt}" src="img/${monster.name}.svg">
+					<img src="img/${monster.name}.svg">
 				</div>`;
       })
       .join("")}
