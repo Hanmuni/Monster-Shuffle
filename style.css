@@ -1,0 +1,16 @@
+.row {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  text-align: center;
+}
+
+.grid {
+  min-height: 6em;
+  padding: 1em;
+}
+
+img {
+  height: 20vh;
+  width: 20vw;
+  background-size: cover;
+}
