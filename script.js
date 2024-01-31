@@ -1,39 +1,51 @@
 let monsters = [
   {
     name: "monster1",
+    alt: "A red monster who looks like a dinosaur",
   },
   {
     name: "monster2",
+    alt: "A orange monster pumpkin with a scary visage",
   },
   {
     name: "monster3",
+    alt: "A zombie girl with a violet sweater",
   },
   {
     name: "monster4",
+    alt: "A green monster who looks like a snail",
   },
   {
     name: "monster5",
+    alt: "A black monster who holds a laptop",
   },
   {
     name: "monster6",
+    alt: "A green monster with three mouth tentacles",
   },
   {
     name: "monster7",
+    alt: "A green monster with a robot head",
   },
   {
     name: "monster8",
+    alt: "A green monster who is a meat eating plant",
   },
   {
     name: "monster9",
+    alt: "A pink monster with headphones",
   },
   {
     name: "monster10",
+    alt: "A green monster with big black eyes, two arms and four legs",
   },
   {
     name: "monster11",
+    alt: "A violet monster with six tentacles",
   },
   {
     name: "monster12",
+    alt: "A orange monster who looks like a dragon",
   },
 ];
 
@@ -62,7 +74,7 @@ app.innerHTML = `<div class="row">
       .map((monster) => {
         return `
 				<div class="grid">
-					<img src="img/${monster.name}.svg">
+					<img  alt="${monster.alt}" src="img/${monster.name}.svg">
 				</div>`;
       })
       .join("")}
