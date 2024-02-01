@@ -7,20 +7,14 @@
 .grid {
   min-height: 6em;
   padding: 1em;
-  position: relative;
 }
 
 img {
   height: 20vh;
   width: 20vw;
   background-size: cover;
-  position: absolute;
 }
 
 img:hover {
   cursor: pointer;
-}
-
-.d-none {
-  display: none;
 }
