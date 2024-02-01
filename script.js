@@ -1,4 +1,4 @@
-let monsters = [
+const monsters = [
   {
     name: "monster1",
     alt: "A red monster who looks like a dinosaur",
@@ -69,13 +69,34 @@ const shuffle = (array) => {
 
 shuffle(monsters);
 
-app.innerHTML = `<div class="row">
-		${monsters
-      .map((monster) => {
+app.innerHTML = `
+  <div class="row">
+    ${monsters
+      .map((monster, index) => {
         return `
-				<div class="grid">
-					<img  alt="${monster.alt}" src="img/${monster.name}.svg">
-				</div>`;
+          <div class="grid">
+            <img
+              src="img/door.svg"
+              id="door${index + 1}"
+              data-monster="${monster.name}"
+              data-image="door"
+            />
+          </div>`;
       })
       .join("")}
-	</div>`;
+  </div>`;
+
+const doors = document.querySelectorAll('[data-image="door"]');
+
+for (const door of doors) {
+  door.addEventListener("click", () => {
+    const monsterName = door.getAttribute("data-monster");
+    const monsterImg = document.createElement("img");
+    monsterImg.alt = monsters.find(
+      (monster) => monster.name === monsterName
+    ).alt;
+    monsterImg.src = `img/${monsterName}.svg`;
+
+    door.replaceWith(monsterImg);
+  });
+}
