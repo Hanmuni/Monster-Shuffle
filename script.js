@@ -70,17 +70,22 @@ const shuffle = (array) => {
 shuffle(monsters);
 
 app.innerHTML = `
-  <div class="row">
+  <div class="row" aria-live="polite">
     ${monsters
       .map((monster, index) => {
         return `
           <div class="grid">
-            <img
-              src="img/door.svg"
+            <button
               id="door${index + 1}"
               data-monster="${monster.name}"
               data-image="door"
-            />
+              aria-atomic="false"
+            >
+              <img
+                src="img/door.svg"
+                alt="A brown door"
+              />
+            </button>
           </div>`;
       })
       .join("")}
@@ -88,15 +93,25 @@ app.innerHTML = `
 
 const doors = document.querySelectorAll('[data-image="door"]');
 
+const clickDoor = (door) => {
+  const monsterName = door.getAttribute("data-monster");
+  const monsterImg = document.createElement("img");
+  monsterImg.alt = monsters.find((monster) => monster.name === monsterName).alt;
+  monsterImg.src = `img/${monsterName}.svg`;
+
+  door.replaceWith(monsterImg);
+};
+
 for (const door of doors) {
   door.addEventListener("click", () => {
-    const monsterName = door.getAttribute("data-monster");
-    const monsterImg = document.createElement("img");
-    monsterImg.alt = monsters.find(
-      (monster) => monster.name === monsterName
-    ).alt;
-    monsterImg.src = `img/${monsterName}.svg`;
+    console.log("Mouse clicked!");
+    clickDoor(door);
+  });
 
-    door.replaceWith(monsterImg);
+  door.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      console.log("Enter key pressed!");
+      clickDoor(door);
+    }
   });
 }

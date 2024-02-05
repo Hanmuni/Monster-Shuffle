@@ -15,6 +15,10 @@ img {
   background-size: cover;
 }
 
-img:hover {
+button {
+  background-color: transparent;
+  border: transparent;
+}
+button:hover {
   cursor: pointer;
 }
