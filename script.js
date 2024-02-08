@@ -49,9 +49,9 @@ const monsters = [
   },
 ];
 
-const app = document.querySelector("#app");
+const appContainer = document.querySelector("#app");
 
-const shuffle = (array) => {
+const shuffleMonsters = (array) => {
   let currentIndex = array.length;
   let temporaryValue, randomIndex;
 
@@ -67,51 +67,47 @@ const shuffle = (array) => {
   return array;
 };
 
-shuffle(monsters);
-
-app.innerHTML = `
-  <div class="row" aria-live="polite">
-    ${monsters
-      .map((monster, index) => {
-        return `
-          <div class="grid">
-            <button
-              id="door${index + 1}"
-              data-monster="${monster.name}"
-              data-image="door"
-              aria-atomic="false"
-            >
-              <img
-                src="img/door.svg"
-                alt="A brown door"
-              />
-            </button>
-          </div>`;
-      })
-      .join("")}
-  </div>`;
+const generateMonsterHTML = (monster, index) => {
+  return `
+    <div class="grid">
+      <button
+        id="door${index + 1}"
+        data-monster="${monster.name}"
+        data-image="door"
+        aria-label="Monster behind the door"
+      >
+        <img
+          src="img/door.svg"
+          alt="A brown door"
+        />
+      </button>
+    </div>`;
+};
 
 const doors = document.querySelectorAll('[data-image="door"]');
-
-const clickDoor = (door) => {
-  const monsterName = door.getAttribute("data-monster");
-  const monsterImg = document.createElement("img");
-  monsterImg.alt = monsters.find((monster) => monster.name === monsterName).alt;
-  monsterImg.src = `img/${monsterName}.svg`;
-
-  door.replaceWith(monsterImg);
-};
 
 for (const door of doors) {
   door.addEventListener("click", () => {
     console.log("Mouse clicked!");
-    clickDoor(door);
+    handleDoorEvent(door);
   });
 
   door.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
       console.log("Enter key pressed!");
-      clickDoor(door);
+      handleDoorEvent(door);
     }
   });
 }
+
+const handleDoorEvent = (door) => {
+  const monsterName = door.getAttribute("data-monster");
+  const monsterAlt = monsters.find(
+    (monster) => monster.name === monsterName
+  ).alt;
+  const monsterImg = document.createElement("img");
+  monsterImg.alt = monsterAlt;
+  monsterImg.src = `img/${monsterName}.svg`;
+
+  door.replaceWith(monsterImg);
+};
