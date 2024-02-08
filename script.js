@@ -67,34 +67,39 @@ const shuffleMonsters = (array) => {
   return array;
 };
 
-const generateMonsterHTML = (monster, index) => {
-  return `
-    <div class="grid">
-      <button
-        id="door${index + 1}"
-        data-monster="${monster.name}"
-        data-image="door"
-        aria-label="Monster behind the door"
-      >
-        <img
-          src="img/door.svg"
-          alt="A brown door"
-        />
-      </button>
-    </div>`;
-};
+shuffleMonsters(monsters);
+
+appContainer.innerHTML = `
+<div class="row" aria-live="polite">
+  ${monsters
+    .map((monster, index) => {
+      return `
+        <div class="grid">
+          <button
+            id="door${index + 1}"
+            data-monster="${monster.name}"
+            data-image="door"
+            aria-atomic="false"
+          >
+            <img
+              src="img/door.svg"
+              alt="A brown door"
+            />
+          </button>
+        </div>`;
+    })
+    .join("")}
+</div>`;
 
 const doors = document.querySelectorAll('[data-image="door"]');
 
 for (const door of doors) {
   door.addEventListener("click", () => {
-    console.log("Mouse clicked!");
     handleDoorEvent(door);
   });
 
   door.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-      console.log("Enter key pressed!");
       handleDoorEvent(door);
     }
   });
