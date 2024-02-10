@@ -1,3 +1,11 @@
+//
+// Variables
+//
+
+// Get the app element
+const appContainer = document.querySelector("#app");
+
+// The monster details
 const monsters = [
   {
     name: "monster1",
@@ -44,13 +52,19 @@ const monsters = [
     alt: "A violet monster with six tentacles",
   },
   {
-    name: "monster12",
-    alt: "A orange monster who looks like a dragon",
+    name: "bomb",
+    alt: "An explosive bomb",
   },
 ];
 
-const appContainer = document.querySelector("#app");
+//
+// Functions
+//
 
+/**
+ * Shuffle the array of monsters
+ * @param  {Array} array [description]
+ */
 const shuffleMonsters = (array) => {
   let currentIndex = array.length;
   let temporaryValue, randomIndex;
@@ -63,56 +77,69 @@ const shuffleMonsters = (array) => {
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
   }
-
-  return array;
 };
 
-shuffleMonsters(monsters);
+/**
+ * Render the monsters into the UI
+ */
+const renderApp = () => {
+  // Randomize the array of monsters
+  shuffleMonsters(monsters);
 
-appContainer.innerHTML = `
-<div class="row" aria-live="polite">
-  ${monsters
-    .map((monster, index) => {
-      return `
-        <div class="grid">
-          <button
-            id="door${index + 1}"
-            data-monster="${monster.name}"
-            data-image="door"
-            aria-atomic="false"
-          >
-            <img
-              src="img/door.svg"
-              alt="A brown door"
-            />
-          </button>
-        </div>`;
-    })
-    .join("")}
-</div>`;
+  // Inject a grid of doors with monsters behind them
+  appContainer.innerHTML = `
+    <div class="row" aria-live="polite">
+      ${monsters
+        .map((monster, index) => {
+          return `
+            <div class="grid">
+              <button
+                id="door${index + 1}"
+                data-monster="${monster.name}"
+                data-image="door"
+                aria-atomic="false"
+              >
+                <img
+                  src="img/door.svg"
+                  alt="A brown door"
+                />
+              </button>
+            </div>`;
+        })
+        .join("")}
+    </div>`;
+};
 
-const doors = document.querySelectorAll('[data-image="door"]');
+/**
+ * Handle opening the door
+ * @param  {Event} event The Event object
+ */
+const handleDoorEvent = (event) => {
+  // Get the opened door
+  // (This accounts for events triggered on an image inside the button)
+  const door = event.target.closest("[data-monster]");
 
-for (const door of doors) {
-  door.addEventListener("click", () => {
-    handleDoorEvent(door);
-  });
-
-  door.addEventListener("keypress", (event) => {
-    if (event.key === "Enter") {
-      handleDoorEvent(door);
-    }
-  });
-}
-
-const handleDoorEvent = (door) => {
+  // Get the monster from the array
   const monsterName = door.getAttribute("data-monster");
   const monsterAlt = monsters.find(
     (monster) => monster.name === monsterName
   ).alt;
+
+  // Create the monster
   const monsterImg = document.createElement("img");
   monsterImg.alt = monsterAlt;
-  monsterImg.src = `img/${monsterName}.svg`;
+  monsterImg.src = `./img/${monsterName}.svg`;
 
+  // Show the monster in the UI
   door.replaceWith(monsterImg);
 };
+
+//
+// Initialize & Listen for Events
+//
+
+// Render the UI
+renderApp();
+
+// Listen for clicks in the app
+appContainer.addEventListener("click", handleDoorEvent);
