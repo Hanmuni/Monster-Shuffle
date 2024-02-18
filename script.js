@@ -139,9 +139,6 @@ const handleDoorEvent = (event) => {
 };
 
 const checkforWin = (monsterName) => {
-  // Count the monster
-  clickedMonsters++;
-
   // Check for loss
   if (monsterName === "bomb") {
     setTimeout(() => {
@@ -150,6 +147,9 @@ const checkforWin = (monsterName) => {
         <button id="replay" class="replay-btn"> PLAY AGAIN </button>
       </div>`;
     }, 500);
+  } else {
+    // Increment clickedMonsters if the opened door is not the bomb
+    clickedMonsters++;
   }
   // Check for Win
   if (clickedMonsters === monsters.length - 1) {
@@ -179,6 +179,7 @@ appContainer.addEventListener("click", (event) => {
 
   // Check if the click is on the replay button
   if (event.target.matches("#replay")) {
+    clickedMonsters = 0;
     renderApp(); // Restart the game
   }
 });
