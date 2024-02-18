@@ -2,8 +2,9 @@
 // Variables
 //
 
-// Get the app element
 const appContainer = document.querySelector("#app");
+const replay = document.querySelector("#replay");
+let clickedMonsters = 0;
 
 // The monster details
 const monsters = [
@@ -132,6 +133,33 @@ const handleDoorEvent = (event) => {
 
   // Show the monster in the UI
   door.replaceWith(monsterImg);
+
+  // Check for Win
+  checkforWin(monsterName);
+};
+
+const checkforWin = (monsterName) => {
+  // Count the monster
+  clickedMonsters++;
+
+  // Check for loss
+  if (monsterName === "bomb") {
+    setTimeout(() => {
+      appContainer.innerHTML = `
+      <div class="loss-message">
+        <button id="replay" class="replay-btn"> PLAY AGAIN </button>
+      </div>`;
+    }, 500);
+  }
+  // Check for Win
+  if (clickedMonsters === monsters.length - 1) {
+    setTimeout(() => {
+      appContainer.innerHTML = `
+      <div class="win-message">
+        <button id="replay" class="replay-btn">PLAY AGAIN </button>
+      </div>`;
+    }, 500);
+  }
 };
 
 //
@@ -142,4 +170,15 @@ const handleDoorEvent = (event) => {
 renderApp();
 
 // Listen for clicks in the app
-appContainer.addEventListener("click", handleDoorEvent);
+appContainer.addEventListener("click", (event) => {
+  // Check if the click is on a door button
+  const doorButton = event.target.closest("[data-monster]");
+  if (doorButton) {
+    handleDoorEvent(event); // Handle opening the door
+  }
+
+  // Check if the click is on the replay button
+  if (event.target.matches("#replay")) {
+    renderApp(); // Restart the game
+  }
+});
